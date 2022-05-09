@@ -1,0 +1,64 @@
+.cursor{
+    cursor: pointer;
+}
+.cursor_label label{
+    cursor: pointer;
+}
+img{
+    max-width: 100%;
+}
+.form-control:disabled:focus, .form-control[readonly]:focus {
+    background-color: #e9ecef;
+    opacity: 1;
+}
+.remove_img, .remove_image {
+    position: absolute;
+    left: 85px;
+    top: -30px;
+    font-size: 14px;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    cursor: pointer;
+    background: rgba(17, 17, 17, 0.4);
+    fill: white;
+    color: #fff;
+    text-align: center;
+    transition: top ease 200ms;
+    border-radius: 100%;
+}
+.preview-box{
+    /*display: none;*/
+    overflow: hidden;
+}
+.preview-box:hover .remove_img, .preview-box:hover .remove_image{
+    top: 5px;
+    display: block;
+}
+.custom-file-label {
+    overflow: hidden;
+}
+
+@media (max-width:1366px) {
+    .card .card-body.d-flex{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+
+.thumbnail-upload, .thumbnail-upload-update{
+    object-fit: cover;
+}
+
+#table-my td{
+    vertical-align: middle;
+}
+
+.description{
+    max-width: 400px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
