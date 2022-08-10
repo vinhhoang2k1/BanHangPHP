@@ -153,9 +153,9 @@ class ProductController extends Controller
         DB::beginTransaction();
 
         try {
-            $category = Product::find($id);
-            $this->uploadService->delete([$category->thumbnail]);
+            $product = Product::find($id);
             Product::destroy($id);
+            $this->uploadService->delete([$product->thumbnail]);
             DB::commit();
 
             return redirect()->route('products.index')->with('success', 'Xóa thành công');

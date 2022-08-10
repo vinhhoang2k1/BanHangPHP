@@ -1,6 +1,6 @@
 <footer class="main-footer">
     <div class="footer-left">
-        Copyright &copy; 2022 <div class="bullet"></div> Sims coding school</a>
+        Copyright &copy; 2022 <div class="bullet"></div></a>
     </div>
     <div class="footer-right">
         2.3.0

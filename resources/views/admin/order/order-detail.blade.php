@@ -45,7 +45,11 @@
                                         <div class="col-md-6">
                                             <address>
                                                 <strong>Phương thức thanh toán:</strong><br>
-                                                Thanh toán khi nhận hàng<br>
+                                                @if($order->payment_method == 'payment_on_delivery')
+                                                    Thanh toán khi nhận hàng
+                                                @else
+                                                    VNPAY
+                                                @endif<br>
                                             </address>
                                         </div>
                                         <div class="col-md-6 text-md-right">

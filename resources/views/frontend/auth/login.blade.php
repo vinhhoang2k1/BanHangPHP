@@ -89,6 +89,7 @@
                                     <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                                         Đăng nhập
                                     </button>
+                                    <a class="text-center text-primary d-block mt-4" href="{{ route('frontend.view-register') }}">Chưa có  tài khoản ?</a>
                                 </div>
                             </form>
                         </div>

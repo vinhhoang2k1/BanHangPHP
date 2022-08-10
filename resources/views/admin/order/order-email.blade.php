@@ -1,6 +1,13 @@
 <div>
     <h3>Xin chào {{ $order->customer->name }}</h3>
     <h4>Chúng tôi gửi thông tin đơn hàng của bạn</h4>
+    <h4>
+        @if($order->status == 'success')
+            Trạng thái: <span style="color: #6da9ee">Thành công</span>
+        @else
+            Trạng thái: <span style="color: #ee5a5a">Thất bại</span>
+        @endif
+    </h4>
     <table class="table table-striped table-hover table-md">
         <tbody>
         <tr>
@@ -27,6 +34,10 @@
         </tbody>
     </table>
     <hr>
-    <h4>Tổng tiền: {{ $order->total_money_format }} đ</h4>
+    @if($order->status == 'success')
+        <h4>Tổng tiền thanh toán: {{ $order->total_money_format }} đ</h4>
+    @else
+        <h4>Đơn hàng của bạn đã bị hủy vì một số lý do nào? Xin lỗi vì sự cố này.</h4>
+    @endif
     <h4>Cảm ơn đã tin tưởng sản phẩm của chúng tôi.</h4>
 </div>

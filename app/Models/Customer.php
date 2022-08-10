@@ -42,7 +42,7 @@ class Customer extends Model implements CanResetPasswordContract, Authenticatabl
 
     public function sendPasswordResetNotification($token)
     {
-        $url =  env('APP_URL') . '/reset-password/'.$token;
+        $url =  'http://fashion-accessories.test/' . 'reset-password/'.$token;
 
         $this->notify(new CustomerResetPasswordNotification($url));
     }

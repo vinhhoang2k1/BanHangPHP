@@ -37,7 +37,7 @@
                                     <td class="text-center">{{ $product->id }}</td>
                                     <td>{{ $product->name }}</td>
                                     <td>
-                                        <img src="{{ asset($product->thumbnailPath) }}" alt="" style="width: 50px; height: 50px; object-fit: cover">
+                                        <img src="{{ asset($product->thumbnailPath) }}" alt="" style="width: 100px; height: 140px; object-fit: contain">
                                     </td>
                                     <td>{{ $product->created_at }}</td>
                                     <td class="text-center">
@@ -52,10 +52,10 @@
                                             <i class="fas fa-edit"></i>
                                         </a>
 
-                                        <form class="d-inline-block ml-2" method="post" id="form-delete" action="{{ route('products.destroy', $product) }}">
+                                        <form class="d-inline-block ml-2" method="post" id="form-delete-{{ $product->id }}" action="{{ route('products.destroy', $product) }}">
                                             @method('DELETE')
                                             @csrf
-                                            <a type="button" onclick="deleteRow()" title="Xóa" class="text-danger">
+                                            <a type="button" onclick="deleteRow({{ $product->id }})" title="Xóa" class="text-danger">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </form>
@@ -114,7 +114,7 @@
             }
         }
 
-        function deleteRow() {
+        function deleteRow(id) {
             swal({
                 title: "Bạn có muốn xóa?",
                 text: "Hành động này sẽ xóa đi dữ liệu!",
@@ -132,7 +132,7 @@
                 dangerMode: true,
             }).then(function(isConfirm) {
                 if (isConfirm) {
-                    $('#form-delete').submit();
+                    $('#form-delete-' + id).submit();
                 }
             })
         }

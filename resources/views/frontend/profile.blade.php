@@ -92,12 +92,58 @@
                                     <div class="text-center mt-5">
                                         <button class="btn btn-primary">Cập nhật</button>
                                     </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane container fade" id="change-password">
+                        <div class="row">
+                            <div class="col-sm-9 mx-auto">
+                                <form action="{{ route('change-password') }}" method="post">
+                                    @csrf
+                                    @method('PATCH')
+                                    <div class="form-group row">
+                                        <label for="old_password" class="col-sm-3 col-form-label text-right">Mật khâu cũ</label>
+                                        <div class="col-sm-9 ">
+                                            <input id="old_password" value="{{ old('old_password') }}" type="password" class="form-control @error('old_password') is-invalid @enderror" name="old_password" tabindex="1" >
+                                            @error('old_password')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="password" class="col-sm-3 col-form-label text-right">Mật khẩu mới</label>
+                                        <div class="col-sm-9 ">
+                                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" tabindex="2" >
+                                            @error('password')
+                                            <div class="invalid-feedback text-danger">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="password_confirmation" class="col-sm-3 col-form-label text-right">Xác nhận mật khẩu</label>
+                                         <div class="col-sm-9">
+                                             <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" tabindex="2" >
+                                             @error('password_confirmation')
+                                             <div class="invalid-feedback">
+                                                 {{ $message }}
+                                             </div>
+                                             @enderror
+                                         </div>
+                                    </div>
+                                    <div class="text-center mt-5">
+                                        <button class="btn btn-primary">Cập nhật</button>
+                                    </div>
 
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane container fade" id="change-password">...</div>
                     <div class="tab-pane container fade" id="order-history">
                         <table class="table" id="cart">
                             <thead>
@@ -112,10 +158,12 @@
                                 @forelse($orders as $item)
                                     <tr>
                                         <td>{{ $item->code }}</td>
-                                        <td>{{ $item->total_money }}</td>
+                                        <td>{{ $item->total_money_format }} đ</td>
                                         <td>
                                             @if($item->status == 'success')
                                                 <span class="badge badge-success">Thành công</span>
+                                            @elseif($item->status == 'cancel')
+                                                <span class="badge badge-danger">Hủy</span>
                                             @else
                                                 <span class="badge badge-warning">Đang chờ xử lý</span>
                                             @endif
@@ -151,7 +199,6 @@
         $('.thumbnail-upload').click(function () {
             $('#file-upload').click();
         });
-
-
+        $('a[href="'+ window.location.hash +'"]').tab('show')
     </script>
 @endsection

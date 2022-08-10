@@ -52,10 +52,10 @@
                                             <i class="fas fa-edit"></i>
                                         </a>
 
-                                        <form class="d-inline-block ml-2" method="post" id="form-delete" action="{{ route('categories.destroy', $category) }}">
+                                        <form class="d-inline-block ml-2" method="post" id="form-delete-{{ $category->id }}" action="{{ route('categories.destroy', $category) }}">
                                             @method('DELETE')
                                             @csrf
-                                            <a type="button" onclick="deleteRow()" title="Xóa" class="text-danger">
+                                            <a type="button" onclick="deleteRow({{ $category->id }})" title="Xóa" class="text-danger">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </form>
@@ -274,7 +274,7 @@
             $('#myModal-update').modal('show');
         @endempty
 
-        function deleteRow() {
+        function deleteRow(id) {
             swal({
                 title: "Bạn có muốn xóa?",
                 text: "Hành động này sẽ xóa đi dữ liệu!",
@@ -292,7 +292,7 @@
                 dangerMode: true,
             }).then(function(isConfirm) {
                 if (isConfirm) {
-                    $('#form-delete').submit();
+                    $('#form-delete-' + id).submit();
                 }
             })
         }

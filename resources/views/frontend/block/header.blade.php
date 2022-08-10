@@ -16,11 +16,13 @@
             <a href="{{ route('list-product.index') }}">Sản phẩm</a>
         </li>
         <li>
-            <a href="">Phụ kiện</a>
-        </li>
-        <li>
             <a href="">Liên hệ</a>
         </li>
+        @if(\Illuminate\Support\Facades\Auth::guard('customer')->check())
+        <li>
+            <a href="">Đăng xuất</a>
+        </li>
+        @endif
     </ul>
     <!-- <svg id="nav-tablet-img" version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200" width="300" height="120">
         <title>Dự án mới</title>
@@ -40,23 +42,25 @@
         <nav class="nav_pc">
             <ul>
                 <li>
-                    <a class="active" href="">Trang chủ</a>
+                    <a class="active" href="/">Trang chủ</a>
                 </li>
                 <li>
                     <a href="{{ route('list-product.index') }}">Sản phẩm</a>
                 </li>
                 <li>
-                    <a href="">Phụ kiện</a>
-                </li>
-                <li>
                     <a href="">Liên hệ</a>
                 </li>
+                @if(\Illuminate\Support\Facades\Auth::guard('customer')->check())
+                    <li>
+                        <a href="{{ route('frontend.logout') }}">Đăng xuất</a>
+                    </li>
+                @endif
             </ul>
         </nav>
     </div>
     <div class="col-auto">
         <div class="logo">
-            <img src="./asset/images/Logo-2.png" alt="">
+            <img src="{{ asset('frontend/asset/images/Logo-2.png') }}" alt="">
         </div>
     </div>
     <div class="col-l-5">
@@ -65,8 +69,21 @@
                 <label for="checkbox_nav"><i class="fa fa-bars" aria-hidden="true"></i></label>
             </li>
             <li>
-                <a href="" onclick="test()">
+                <a href="#" class="position-relative wrapper-search">
                     <i class="fa fa-search" aria-hidden="true"></i>
+                    <div class="search shadow-sm ">
+                        <div class="position-relative">
+                            <button class="btn btn-close-search">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <form action="{{ route('list-product.index') }}" method="get" class="form-inline justify-content-center pt-4 mt-3 pb-3">
+                            <input type="search" class="form-control" name="search">
+                            <button type="submit" class="btn btn-outline-secondary ml-2">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </div>
                 </a>
             </li>
             <li>
@@ -76,10 +93,13 @@
                 </a>
             </li>
             <li>
-                <a href="">
+                <a href="{{ route('profile') }}">
                     <i class="fa fa-user-o" aria-hidden="true"></i>
                 </a>
             </li>
         </ul>
     </div>
 </div>
+@section('scripts')
+
+@endsection

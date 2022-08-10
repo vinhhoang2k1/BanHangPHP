@@ -23,6 +23,10 @@ class ListProductController extends Controller
             $query = $query->where('category_id', $categoryID);
         }
 
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->query('search') . '%');
+        }
+
         $products = $query->paginate(6)->withQueryString();
 
 //        dd($categories);

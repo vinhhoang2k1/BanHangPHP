@@ -31,7 +31,33 @@
 <script src="{{ asset('frontend/asset/js/cart.js') }}"></script>
 
 @yield('scripts')
+<script>
+    @empty(!session('success'))
+    iziToast.success({
+        position: 'topRight',
+        message: '{{ session('success') }}',
+    });
+    @endempty
+    @empty(!session('error'))
+    iziToast.error({
+        position: 'topRight',
+        message: '{{ session('error') }}',
+    });
+    @endempty
 
+    $(document).ready(function () {
+        let search = $('.search');
+        search.hide();
+        $('.wrapper-search').click(function () {
+            search.show();
+        });
+
+        $('.btn-close-search').click(function () {
+            search.css('display', 'none');
+        });
+    })
+
+</script>
 </body>
 
 </html>

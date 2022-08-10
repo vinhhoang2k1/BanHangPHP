@@ -65,7 +65,7 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Mô tả ngắn</label>
+                                <label>Mô tả ngắn <span class="text-danger">*</span></label>
                                 <textarea name="short_content" id="short_content" class="form-control @error('short_content') is-invalid @enderror" placeholder="Nhập mô tả ngắn">{{ old('short_content') }}</textarea>
                                 @error('short_content')
                                 <div class="invalid-feedback d-block">
@@ -196,7 +196,14 @@
             filebrowserImageUploadUrl: "{{ route('ckfinder_connector') }}?command=QuickUpload&type=Images",
             filebrowserFlashUploadUrl: "{{ route('ckfinder_connector') }}?command=QuickUpload&type=Flash",
         } );
-
+        CKEDITOR.replace( 'short_content', {
+            filebrowserBrowseUrl     : "{{ route('ckfinder_browser') }}",
+            filebrowserImageBrowseUrl: "{{ route('ckfinder_browser') }}?type=Images&token=123",
+            filebrowserFlashBrowseUrl: "{{ route('ckfinder_browser') }}?type=Flash&token=123",
+            filebrowserUploadUrl     : "{{ route('ckfinder_connector') }}?command=QuickUpload&type=Files",
+            filebrowserImageUploadUrl: "{{ route('ckfinder_connector') }}?command=QuickUpload&type=Images",
+            filebrowserFlashUploadUrl: "{{ route('ckfinder_connector') }}?command=QuickUpload&type=Flash",
+        } );
         function loadFile(event) {
             var output = document.getElementsByClassName('thumbnail-upload')[0];
             output.src = URL.createObjectURL(event.target.files[0]);

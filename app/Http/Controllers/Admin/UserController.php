@@ -11,6 +11,7 @@ use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -31,11 +32,13 @@ class UserController extends Controller
         $users = User::all();
 
         $id = $request->query('id');
-        $userDB = User::find($id);
+        $userDB = User::with('roles')->find($id);
+
+        $roles = Role::all();
 
 //        dd($user);
 
-        return view('admin.user.user-list', compact('users', 'userDB'));
+        return view('admin.user.user-list', compact('users', 'userDB', 'roles'));
     }
 
     /**
@@ -64,7 +67,10 @@ class UserController extends Controller
             unset($data['password_confirmation']);
             $data['password'] = Hash::make($data['password']);
             $data['avatar'] = $this->uploadService->upload($data['avatar'] ?? '', 'avatar');
-            User::create($data);
+            $roleId = $data['role'];
+            unset($data['role']);
+            $user = User::create($data);
+            $user->assignRole($roleId);
             DB::commit();
 
             return redirect()->route('users.index')->with('success', 'Thêm thành công');
@@ -116,9 +122,15 @@ class UserController extends Controller
             } else {
                 unset($data['password']);
             }
-//            dd($data['avatar']);
+            $roleId = $data['role'];
+            unset($data['role']);
             $data['avatar'] = $this->uploadService->handleFileUpdate($data['avatar'] ?? '', $model->avatar, 'avatar');
             User::where('id', $id)->update($data);
+            $user = User::with('roles')->where('id', $id)->first();
+
+            $model->removeRole($user->roles->first()->name);
+            $model->assignRole($roleId);
+
             DB::commit();
 
             return redirect()->route('users.index')->with('success', 'Sửa thành công');

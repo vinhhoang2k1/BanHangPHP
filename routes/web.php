@@ -48,12 +48,14 @@ Route::group(['middleware' => 'auth-customer:customer'], function () {
     Route::put('/profile', [\App\Http\Controllers\Frontend\CustomerController::class, 'update'])->name('profile.update');
     Route::post('/order', [\App\Http\Controllers\Frontend\OrderController::class, 'order'])->name('order');
     Route::get('/order/detail/{order}', [\App\Http\Controllers\Frontend\OrderController::class, 'detail'])->name('order.detail');
+    Route::patch('/change-password', [\App\Http\Controllers\Frontend\AuthController::class, 'changePassword'])->name('change-password');
+    Route::get('/logout', function () {
+        \Illuminate\Support\Facades\Auth::logout();
+        return back();
+    })->name('frontend.logout');
 
-    Route::get('/test', function () {
-        $order = Order::with(['orderItems.product', 'customer'])->first();
-
-        return new \App\Mail\OrderInfo($order);
-    });
+    Route::get('/payment/{id}', [\App\Http\Controllers\Frontend\OrderController::class, 'vnPayPayment']);
+    Route::get('/return-vnpay/{id}', [\App\Http\Controllers\Frontend\OrderController::class, 'vnpayReturn']);
 });
 
 
@@ -64,12 +66,13 @@ Route::get('/list-product/getMoreCategory/{idx}', [\App\Http\Controllers\Fronten
 Route::get('/product/detail/{slug}', [\App\Http\Controllers\Frontend\DetailController::class, 'detail'])->name('product.detail');
 Route::get('/cart', [\App\Http\Controllers\Frontend\OrderController::class, 'cart'])->name('cart');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:Quản trị viên|Nhân viên']], function (){
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/logout', [\App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('admin.logout');
 
     // users
-    Route::resource('/users', \App\Http\Controllers\Admin\UserController::class);
+    Route::resource('/users', \App\Http\Controllers\Admin\UserController::class)->middleware('role:Quản trị viên');
+    Route::get('/customers', [\App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('customers.index');
 
     Route::resource('/categories', \App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('/products', \App\Http\Controllers\Admin\ProductController::class);
@@ -77,5 +80,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
     Route::get('/orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/detail/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'detail'])->name('orders.detail');
     Route::post('/orders/update-status', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus']);
+
+//    Route::get('/report', [\App\Http\Controllers\Admin\DashboardController::class, 'report'])->name('report');
 });
 

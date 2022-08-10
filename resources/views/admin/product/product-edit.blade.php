@@ -36,7 +36,7 @@
                                 <label>Danh mục sản phẩm</label>
                                 <select name="category_id" class="form-control select2" style="width:100%;">
                                     @foreach($categories as $category)
-                                        @if(old('post_category_id', $product->post_category_id) == $category['id'])
+                                        @if(old('category_id', $product->category_id) == $category['id'])
                                             <option selected value="{{ $category['id'] }}">{{ $category['name'] }}</option>
                                         @else
                                             <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
@@ -197,7 +197,14 @@
             filebrowserImageUploadUrl: "{{ route('ckfinder_connector') }}?command=QuickUpload&type=Images",
             filebrowserFlashUploadUrl: "{{ route('ckfinder_connector') }}?command=QuickUpload&type=Flash",
         } );
-
+        CKEDITOR.replace( 'short_content', {
+            filebrowserBrowseUrl     : "{{ route('ckfinder_browser') }}",
+            filebrowserImageBrowseUrl: "{{ route('ckfinder_browser') }}?type=Images&token=123",
+            filebrowserFlashBrowseUrl: "{{ route('ckfinder_browser') }}?type=Flash&token=123",
+            filebrowserUploadUrl     : "{{ route('ckfinder_connector') }}?command=QuickUpload&type=Files",
+            filebrowserImageUploadUrl: "{{ route('ckfinder_connector') }}?command=QuickUpload&type=Images",
+            filebrowserFlashUploadUrl: "{{ route('ckfinder_connector') }}?command=QuickUpload&type=Flash",
+        } );
         function loadFile(event) {
             var output = document.getElementsByClassName('thumbnail-upload')[0];
             output.src = URL.createObjectURL(event.target.files[0]);

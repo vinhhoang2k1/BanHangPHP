@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -22,13 +23,12 @@ class AuthController extends Controller
     public function __construct(UploadService $uploadService)
     {
         $this->uploadService = $uploadService;
-        $this->middleware('guest:customer');
     }
 
-    protected function guard()
-    {
-        return Auth::guard('customer');
-    }
+//    protected function guard()
+//    {
+//        return Auth::guard('customer');
+//    }
 
 
     public function viewRegister() {
@@ -73,7 +73,7 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request) {
-        Auth::guard('customer')->logout();
+        Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -117,5 +117,32 @@ class AuthController extends Controller
         return $status === Password::PASSWORD_RESET
             ? redirect()->route('frontend.login')->with('status', __($status))
             : back()->withErrors(['email' => [__($status)]]);
+    }
+
+    public function changePassword(Request $request) {
+
+        $customerId = Auth::id();
+        $customer = Customer::find($customerId);
+        $oldPassword = $request->input('old_password');
+
+        if (!Hash::check($oldPassword, $customer->password)) {
+            return redirect()->route('profile', ['#change-password'])->withErrors(['old_password' => 'Mật khẩu cũ không hợp lệ']);
+        }
+
+       $rules = [
+           'password' => 'required|confirmed',
+       ];
+
+        $validator= Validator::make($request->all(), $rules);
+
+        if ($validator->fails()){
+            return redirect()->route('profile', ['#change-password'])->withErrors($validator)->withInput();
+        }
+
+        $validated = $validator->validated();
+        $customer->password = Hash::make($validated['password']);
+        $customer->save();
+
+        return redirect()->route('profile', ['#change-password'])->with('success', 'Cập nhật mật khẩu thành công');
     }
 }

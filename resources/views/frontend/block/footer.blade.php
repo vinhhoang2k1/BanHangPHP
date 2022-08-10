@@ -64,7 +64,7 @@
 
         <div class="col-l-3 col-m-6">
             <div class="logo">
-                <img src="./asset/images/Logo-2.png" alt="">
+                <img src="{{ asset('frontend/asset/images/Logo-2.png') }}" alt="">
             </div>
             <br>
             <span>Hướng đến mục tiêu mang lại niềm vui ăn mặc mỗi ngày cho hàng triệu người tiêu dùng việt. Hãy cùng Yolo hướng đến một cuộc sống năng động tích cực hơn.</span>

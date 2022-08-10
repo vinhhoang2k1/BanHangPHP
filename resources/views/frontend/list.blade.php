@@ -45,8 +45,7 @@
                                         {{--                                    <span class="product-price">399,000</span>--}}
                                     </div>
                                 </a>
-
-                                <button class="btn-product">Chọn mua</button>
+                                <a style="display: inline-block" href="{{ route('product.detail', ['slug' => $item->slug]) }}" class="btn-product">Xem chi tiết</a>
                             </div>
                         </div>
                         @empty
@@ -80,6 +79,20 @@
                 $('#list-category').append(htmlCategory);
                 idx++;
             })
+        })
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            let search = $('.search');
+            search.hide();
+            $('.wrapper-search').click(function () {
+                search.show();
+            });
+
+            $('.btn-close-search').click(function () {
+                search.css('display', 'none');
+            });
         })
     </script>
 @endsection

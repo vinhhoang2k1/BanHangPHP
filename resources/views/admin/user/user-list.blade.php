@@ -54,10 +54,10 @@
                                             <i class="fas fa-edit"></i>
                                         </a>
 
-                                        <form class="d-inline-block ml-2" method="post" id="form-delete" action="{{ route('users.destroy', $user) }}">
+                                        <form class="d-inline-block ml-2" method="post" id="form-delete-{{ $user->id }}" action="{{ route('users.destroy', $user) }}">
                                             @method('DELETE')
                                             @csrf
-                                            <a type="button" onclick="deleteRow()" title="Xóa" class="text-danger">
+                                            <a type="button" onclick="deleteRow({{ $user->id }})" title="Xóa" class="text-danger">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </form>
@@ -125,8 +125,9 @@
                             <div class="form-group col-md-6">
                                 <label>Chức vụ <span class="text-danger">*</span></label>
                                 <select name="role" class="form-control @error('role') is-invalid @enderror">
-                                    @foreach(config('constants.role') as $key => $role)
-                                        <option @if($key == old('role')) selected @endif @empty($key) disabled @endif value="{{ $key }}">{{ $role }}</option>
+                                    <option disabled selected value="">Chọn chức vụ</option>
+                                    @foreach($roles as $key => $role)
+                                        <option @if($role->id == old('role')) selected @endif value="{{ $role->id }}">{{ $role->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('role')
@@ -234,8 +235,8 @@
                                 <div class="form-group col-md-6">
                                     <label>Chức vụ <span class="text-danger">*</span></label>
                                     <select name="role" class="form-control @error('role') is-invalid @enderror">
-                                        @foreach(config('constants.role') as $key => $role)
-                                            <option @if($key == old('role', $userDB->role)) selected @endif @empty($key) disabled @endif value="{{ $key }}">{{ $role }}</option>
+                                        @foreach($roles as $key => $role)
+                                            <option @if($role->id == old('role', $userDB->roles->first()->id)) selected @endif value="{{ $role->id }}">{{ $role->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('role')
@@ -362,7 +363,7 @@
             $('#myModal-update').modal('show');
         @endempty
 
-        function deleteRow() {
+        function deleteRow(id) {
             swal({
                 title: "Bạn có muốn xóa?",
                 text: "Hành động này sẽ xóa đi dữ liệu!",
@@ -380,7 +381,7 @@
                 dangerMode: true,
             }).then(function(isConfirm) {
                 if (isConfirm) {
-                    $('#form-delete').submit();
+                    $('#form-delete-' + id).submit();
                 }
             })
         }

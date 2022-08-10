@@ -13,7 +13,6 @@
                     </div>
              </div>
         </div>
-
     </div>
 @endsection
 @section('scripts')
@@ -56,8 +55,20 @@
 '                            <table class="table d-inline">\n' +
 '                                <tr>\n' +
 '                                    <td>Tổng tiền:</td>\n' +
-'                                    <td>'+ totalMoney +'</td>\n' +
+'                                    <td>'+ totalMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) +'</td>\n' +
 '                                </tr>\n' +
+                                '<tr>' +
+                '                   <td>Phương thưc thanh toán:</td>' +
+                '                   <td>' +
+                '                       <div class="custom-control custom-radio custom-control-inline">\n' +
+                '                           <input value="vnpay" type="radio" id="customRadioInline1" name="payment_method" class="custom-control-input">\n' +
+                '                           <label class="custom-control-label" for="customRadioInline1">VNPAY</label>\n' +
+                '                    </div>' +
+                '                       <div class="custom-control custom-radio custom-control-inline">\n' +
+                '                           <input value="payment_on_delivery" checked type="radio" id="customRadioInline2" name="payment_method" class="custom-control-input">\n' +
+                '                           <label class="custom-control-label" for="customRadioInline2">Thanh toán khi nhận hàng</label>\n' +
+                '                       </div>' +
+                '                   </td>' +
 '                            </table>\n' +
 '                            <button id="order" class="btn btn-primary btn-block mt-4">Đặt hàng</button>\n' +
 '                        </div>';
@@ -109,19 +120,30 @@
 
         $('#order').click(function () {
             let cart = localStorage.getItem('cart');
-
+            let paymentMethod = $("input[name='payment_method']:checked").val();
+            console.log(paymentMethod)
             $.ajax({
                 url: '/order',
                 type: 'POST',
-                data: {cart: cart},
+                data: {cart: cart, 'payment_method': paymentMethod},
                 success: function (data) {
+                    console.log(data)
                     if (data.result) {
                         localStorage.removeItem('cart');
-                        renderCart();
+                        if (data.methodPay == 'vnpay') {
+                            window.location.href = '/payment/' + data.order.id
+                        }
+                         renderCart();
                         iziToast.success({
                             position: 'topRight',
                             message: 'Đặt mua thành công',
                         });
+
+                    }
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        location.href = '/dang-nhap';
                     }
                 }
             });

@@ -1,10 +1,10 @@
 @extends('admin.app')
-@section('title', 'Danh sách đơn hàng')
+@section('title', 'Danh sách Khách hàng')
 @section('header')
     <h1></h1>
     <div class="section-header-breadcrumb">
-        <div class="breadcrumb-item"><a href="#">Quản lý đơn hàng</a></div>
-        <div class="breadcrumb-item active">Danh sách đơn hàng</div>
+        <div class="breadcrumb-item active"><a href="#">Quản lý Khách hàng</a></div>
+        <div class="breadcrumb-item">Danh sách Khách hàng</div>
     </div>
 @endsection
 @section('main-content')
@@ -16,36 +16,35 @@
                         <table class="table table-striped" id="table-my">
                             <thead>
                                 <tr>
-                                    <th class="text-center d-none">id</th>
-                                <th class="text-center">Mã</th>
-                                <th>Tên khách hàng</th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Ảnh đại diện</th>
+                                <th>Tên</th>
                                 <th>Số điện thoại</th>
-                                <th>Tổng tiền</th>
+                                <th>Địa chỉ</th>
+                                <th>Email</th>
                                 <th class="text-center">Trạng thái</th>
-                                <th class="text-center">Tác vụ</th>
+{{--                                <th class="text-center">Tác vụ</th>--}}
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach($orders as $order)
+                                @foreach($customers as $customer)
                                 <tr>
-                                    <td class="text-center d-none">{{ $order->id }}</td>
-                                    <td class="text-center">{{ $order->code }}</td>
-                                    <td>{{ $order->customer->name }}</td>
-                                    <td>{{ $order->customer->phone }}</td>
-                                    <td>{{ $order->total_money_format }} đ</td>
+                                    <td class="text-center">{{ $customer->id }}</td>
                                     <td class="text-center">
-                                        @if($order->status == 'success')
-                                            <span class="badge badge-success">Thành công</span>
-                                        @elseif($order->status == 'cancel')
-                                            <span class="badge badge-danger">Hủy</span>
-                                        @else
-                                            <span class="badge badge-warning">Đang chờ xử lý</span>
-                                        @endif
+                                        <figure class="avatar mr-2">
+                                            <img src="{{ asset($customer->avatarPath) }}"  alt="">
+                                        </figure>
                                     </td>
+                                    <td>{{ $customer->name }}</td>
+                                    <td>{{ $customer->phone }}</td>
+                                    <td>{{ $customer->address }}</td>
+                                    <td>{{ $customer->email }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('orders.detail', $order) }}" class="text-primary">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
+                                        @if($customer->status == 'active')
+                                            <span class="badge badge-info">Hoạt động</span>
+                                        @else
+                                            <span class="badge badge-danger">Không hoạt động</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -58,7 +57,6 @@
     </div>
 {{--    @dump($userDB)--}}
 @endsection
-
 @section('links')
     <link rel="stylesheet" href="{{ asset('assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css') }}">@endsection

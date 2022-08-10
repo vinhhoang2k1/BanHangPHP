@@ -16,7 +16,7 @@
                 <h3 class="font-weight-bold">{{ $product->name }}</h3>
                 <h5 class="text-danger font-weight-bold">Giá: {{ $product->price_format }}</h5>
                 <h5>Có sẵn: <span class="quantity-product">{{$product->quantity}}</span></h5>
-                <p>{{ $product->short_content }}</p>
+                <p>{!! $product->short_content !!}</p>
                 <div>
                     <div class="d-inline-flex border-success border text-center" style="height: 30px; font-size: 20px">
                         <span class="border-success border-right amount-minus" style="width: 30px">-</span>
@@ -24,7 +24,7 @@
                         <span class="border-success border-left amount-plus" style="width: 30px">+</span>
                     </div>
                 </div>
-                <button class="btn btn-outline-success mt-3"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Chọn mua</button>
+{{--                <button class="btn btn-outline-success mt-3"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Chọn mua</button>--}}
                 <button class="btn btn-outline-warning mt-3" id="addToCart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Thêm giỏ hàng</button>
             </div>
             <div class="col-md-3 d-none d-md-block">
@@ -73,7 +73,6 @@
                 $('.quantity').text(quantity + 1)
             }
         });
-        console.log(product)
         $('#addToCart').click(function () {
             let cartItem = {
                 id: product.id,
@@ -81,10 +80,8 @@
                 price: product.price,
                 thumbnail: product.thumbnail
             };
-
             let cart = localStorage.getItem('cart');
             cart = JSON.parse(cart);
-            // console.log(cart)
             let quantity = parseInt($('.quantity').text());
             if( cart?.length > 0 ) {
 
@@ -98,13 +95,11 @@
                     cartItem.quantity = quantity;
                     cart.push(cartItem)
                 }
-
             } else {
                 cart = [];
                 cartItem.quantity = quantity;
                 cart[0] = cartItem;
             }
-
             $('.number-product-cart').text(cart.length)
             localStorage.setItem('cart', JSON.stringify(cart));
         });

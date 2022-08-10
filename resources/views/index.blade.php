@@ -96,11 +96,11 @@
                         </div>
                         <div class="product-info">
                             <span class="product_name">{{ $item->name }}</span> <br>
-                            <span class="product-price-sale">{{ number_format($item->price) }}</span>
+                            <span class="product-price-sale">{{ number_format($item->price) }} đ</span>
 {{--                            <span class="product-price">{{ $item->price }}</span>--}}
                         </div>
 
-                        <button class="btn-product">Chọn mua</button>
+                        <a style="display: inline-block" href="{{ route('product.detail', ['slug' => $item->slug]) }}" class="btn-product">Xem chi tiết</a>
                     </div>
                 </div>
             @endforeach
@@ -119,11 +119,11 @@
                         </div>
                         <div class="product-info">
                             <span class="product_name">{{ $item->name }}</span> <br>
-                            <span class="product-price-sale">{{ number_format($item->price) }}</span>
+                            <span class="product-price-sale">{{ number_format($item->price) }} đ</span>
                             {{--                            <span class="product-price">{{ $item->price }}</span>--}}
                         </div>
 
-                        <button class="btn-product">Chọn mua</button>
+                        <a style="display: inline-block" href="{{ route('product.detail', ['slug' => $item->slug]) }}" class="btn-product">Xem chi tiết</a>
                     </div>
                 </div>
             @endforeach
@@ -149,11 +149,11 @@
                         </div>
                         <div class="product-info">
                             <span class="product_name">{{ $item->name }}</span> <br>
-                            <span class="product-price-sale">{{ number_format($item->price) }}</span>
+                            <span class="product-price-sale">{{ number_format($item->price) }} đ</span>
                             {{--                            <span class="product-price">{{ $item->price }}</span>--}}
                         </div>
 
-                        <button class="btn-product">Chọn mua</button>
+                        <a style="display: inline-block" href="{{ route('product.detail', ['slug' => $item->slug]) }}" class="btn-product">Xem chi tiết</a>
                     </div>
                 </div>
             @endforeach

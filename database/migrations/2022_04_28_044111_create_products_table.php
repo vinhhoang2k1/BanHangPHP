@@ -26,7 +26,7 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('selling_product')->nullable();
             $table->tinyInteger('common')->nullable();
             $table->tinyInteger('new_product')->nullable();
-            $table->unsignedInteger('category_id');
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->timestamps();
         });
     }
